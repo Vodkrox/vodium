@@ -1,4 +1,4 @@
-# vodkrox-rice
+# Vodium
 
 Desktop configuration for [Hyprland](https://hyprland.org) with a custom shell built on [Quickshell](https://quickshell.org): sidebar, OSD, launcher, clipboard, notifications, tray, and network, bluetooth, sound and power menus.
 
