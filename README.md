@@ -12,11 +12,12 @@ Package names may vary between releases.
 ### Debian / Ubuntu
 
 ```
-sudo apt install hyprland python3 socat pipewire pipewire-pulse wireplumber pulseaudio-utils \
-  brightnessctl network-manager wl-clipboard jq psmisc
+sudo apt install -t trixie-backports hyprland quickshell
+sudo apt install python3 socat pipewire pipewire-pulse wireplumber pulseaudio-utils \
+  brightnessctl network-manager cliphist wl-clipboard jq psmisc
 ```
 
-`quickshell` and `awww` must be built from source.
+`hyprland` and `quickshell` come from `trixie-backports` (Debian 13). `awww` is not packaged and must be built from source.
 
 ### Fedora / RHEL
 
