@@ -1,21 +1,5 @@
 # Vodium
 
-## Structure
-
-```
-config.json                 Machine settings (created automatically, not versioned)
-hypr/
-  hyprland.conf             Generic Hyprland configuration
-  local.conf                Generated from config.json (not versioned)
-  numpad-binds.conf         Generated at runtime depending on Num Lock state
-  scripts/
-    generate-conf.py        Creates config.json if missing and generates local.conf
-    auto-output.py          Enables only the external monitor when connected
-    numpad-binds.sh         Numpad shortcuts depending on Num Lock
-quickshell/osd/             Quickshell shell (QML)
-  scripts/                  Helpers: privacy (camera/mic) and Claude Code status
-```
-
 ## Dependencies
 
 - Required: `hyprland`, `quickshell`, `python3`, `socat`, `awww` (wallpaper), `pipewire` with `wpctl` and `pactl`, `brightnessctl`, `NetworkManager` (`nmcli`), `cliphist`, `wl-clipboard`, `jq`, `fuser`.
