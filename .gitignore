@@ -1,0 +1,17 @@
+# Configuración específica de cada máquina (se genera con hypr/scripts/generate-conf.py)
+config.json
+hypr/local.conf
+hypr/numpad-binds.conf
+
+# Estado local de Claude Code
+.claude/
+
+# Datos del usuario generados en ejecución
+quickshell/osd/clipboard-pins.json
+quickshell/osd/pinned.json
+quickshell/osd/power.json
+
+# Temporales
+*.orig
+*.bak
+*.tmp

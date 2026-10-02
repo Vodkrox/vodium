@@ -1,0 +1,91 @@
+import QtQuick
+import QtQuick.Shapes
+
+// Eslabón cromado estilo Y2K, centrado en su posición. `edge` = visto de canto (barra fina);
+// si no, anillo visto de frente con su agujero.
+Item {
+    id: root
+    property bool edge: false
+    property real length: 34
+    property real thickness: 18
+    property real wire: 5             // grosor del alambre del anillo
+
+    width: length
+    height: thickness
+
+    // Gradiente metálico: reflejos blancos alternados con zonas oscuras
+    component Chrome: LinearGradient {
+        x1: 0; y1: 0; x2: 0; y2: root.thickness
+        GradientStop { position: 0.00; color: "#ffffff" }
+        GradientStop { position: 0.22; color: "#8f9bb0" }
+        GradientStop { position: 0.45; color: "#f6faff" }
+        GradientStop { position: 0.70; color: "#4f5a6e" }
+        GradientStop { position: 1.00; color: "#d5deec" }
+    }
+
+    // Anillo: estadio exterior y estadio interior (el agujero sale del relleno par-impar)
+    Component {
+        id: ringC
+        Shape {
+            id: ring
+            readonly property real ro: root.thickness / 2
+            readonly property real wi: root.length - 2 * root.wire
+            readonly property real hi: root.thickness - 2 * root.wire
+            readonly property real ri: hi / 2
+            layer.enabled: true
+            layer.samples: 4
+
+            ShapePath {
+                strokeWidth: -1
+                fillRule: ShapePath.OddEvenFill
+                fillGradient: Chrome {}
+
+                startX: ring.ro; startY: 0
+                PathLine { x: root.length - ring.ro; y: 0 }
+                PathArc { x: root.length - ring.ro; y: root.thickness; radiusX: ring.ro; radiusY: ring.ro }
+                PathLine { x: ring.ro; y: root.thickness }
+                PathArc { x: ring.ro; y: 0; radiusX: ring.ro; radiusY: ring.ro }
+
+                PathMove { x: root.wire + ring.ri; y: root.wire }
+                PathLine { x: root.wire + ring.wi - ring.ri; y: root.wire }
+                PathArc { x: root.wire + ring.wi - ring.ri; y: root.wire + ring.hi; radiusX: ring.ri; radiusY: ring.ri }
+                PathLine { x: root.wire + ring.ri; y: root.wire + ring.hi }
+                PathArc { x: root.wire + ring.ri; y: root.wire; radiusX: ring.ri; radiusY: ring.ri }
+            }
+        }
+    }
+
+    // Eslabón de canto: una barra fina, algo más corta para encajar entre los anillos
+    Component {
+        id: edgeC
+        Shape {
+            id: slim
+            readonly property real x0: 4
+            readonly property real w: root.length - 8
+            readonly property real h: root.wire * 1.5
+            readonly property real y0: (root.thickness - h) / 2
+            readonly property real r: h / 2
+            layer.enabled: true
+            layer.samples: 4
+
+            ShapePath {
+                strokeWidth: -1
+                fillGradient: LinearGradient {
+                    x1: 0; y1: 0; x2: 0; y2: root.thickness
+                    GradientStop { position: 0.30; color: "#ffffff" }
+                    GradientStop { position: 0.45; color: "#8f9bb0" }
+                    GradientStop { position: 0.55; color: "#f6faff" }
+                    GradientStop { position: 0.70; color: "#4f5a6e" }
+                }
+
+                startX: slim.x0 + slim.r; startY: slim.y0
+                PathLine { x: slim.x0 + slim.w - slim.r; y: slim.y0 }
+                PathArc { x: slim.x0 + slim.w - slim.r; y: slim.y0 + slim.h; radiusX: slim.r; radiusY: slim.r }
+                PathLine { x: slim.x0 + slim.r; y: slim.y0 + slim.h }
+                PathArc { x: slim.x0 + slim.r; y: slim.y0; radiusX: slim.r; radiusY: slim.r }
+            }
+        }
+    }
+
+    Loader { anchors.fill: parent; sourceComponent: root.edge ? edgeC : ringC }
+}
