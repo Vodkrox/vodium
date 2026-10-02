@@ -58,6 +58,29 @@ sudo emerge --ask gui-wm/hyprland gui-apps/quickshell gui-apps/awww dev-lang/pyt
 
 Optional on all distros: `tuned`, `alacritty`, `swaylock`, `kcalc`.
 
+### Building from source
+
+Needs `git` and the Rust toolchain (`cargo`).
+
+`awww`:
+
+```
+git clone https://codeberg.org/LGFae/awww
+cd awww
+cargo build --release
+install -Dm755 target/release/awww target/release/awww-daemon -t ~/.local/bin
+```
+
+`quickshell` (also needs `cmake`, `ninja` and the Qt 6 development packages; see the [install guide](https://quickshell.org/docs/guide/install-setup/)):
+
+```
+git clone https://github.com/quickshell-mirror/quickshell
+cd quickshell
+cmake -GNinja -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+sudo cmake --install build
+```
+
 ## Setup
 
 1. Clone or copy the repo to `~/.config/vodkrox-rice`.
