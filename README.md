@@ -1,9 +1,5 @@
 # Vodium
 
-Desktop configuration for [Hyprland](https://hyprland.org) with a custom shell built on [Quickshell](https://quickshell.org): sidebar, OSD, launcher, clipboard, notifications, tray, and network, bluetooth, sound and power menus.
-
-Nothing in the repo is machine-specific. Everything that depends on hardware or personal preferences lives in `config.json`.
-
 ## Structure
 
 ```
