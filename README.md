@@ -1,4 +1,4 @@
-# Vodium
+# vodium
 
 ## Dependencies
 
@@ -83,10 +83,10 @@ sudo cmake --install build
 
 ## Setup
 
-1. Clone or copy the repo to `~/.config/vodkrox-rice`.
+1. Clone or copy the repo to `~/.config/vodium`.
 2. Link the Hyprland configuration:
    ```
-   ln -s vodkrox-rice/hypr ~/.config/hypr
+   ln -s vodium/hypr ~/.config/hypr
    ```
 3. Generate the machine configuration:
    ```
