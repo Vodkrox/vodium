@@ -92,7 +92,7 @@ sudo cmake --install build
    ```
    hypr/scripts/generate-conf.py
    ```
-   If `config.json` doesn't exist, it creates it with detected values (backlight, LEDs, battery, internal monitor) and generic ones for the rest. It then writes `hypr/local.conf` and an empty `numpad-binds.conf`.
+   If `config.json` doesn't exist, it creates it with detected values (backlight, LEDs, battery, internal monitor) and generic ones for the rest. It then writes `hypr/local.lua` and an empty `numpad-binds.lua`.
 4. Review `config.json` and adjust whatever is needed (keyboard, wallpaper, monitors, GPU…).
 5. Log in to Hyprland. Quickshell starts by itself via `exec-once`.
 
@@ -139,7 +139,7 @@ Media keys control volume, microphone, brightness and the calculator. With Num L
 
 ## Local data
 
-These files are generated at runtime and not versioned (see `.gitignore`): `config.json`, `hypr/local.conf`, `hypr/numpad-binds.conf`, `quickshell/osd/pinned.json`, `quickshell/osd/power.json` and `quickshell/osd/clipboard-pins.json`.
+These files are generated at runtime and not versioned (see `.gitignore`): `config.json`, `hypr/local.lua`, `hypr/numpad-binds.lua`, `quickshell/osd/pinned.json`, `quickshell/osd/power.json` and `quickshell/osd/clipboard-pins.json`.
 
 ## Notes
 

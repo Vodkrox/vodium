@@ -1,12 +1,12 @@
 #!/bin/sh
-out="$(dirname "$(readlink -f "$0")")/../numpad-binds.conf"
+out="$(dirname "$(readlink -f "$0")")/../numpad-binds.lua"
 if [ "$1" = "0" ]; then
-    cat > "$out.tmp" <<CONF
-bind = , KP_Left, movefocus, l
-bind = , KP_Right, movefocus, r
-bind = , KP_Up, movefocus, u
-bind = , KP_Down, movefocus, d
-CONF
+    cat > "$out.tmp" <<LUA
+hl.bind("KP_Left", hl.dsp.focus({ direction = "left" }))
+hl.bind("KP_Right", hl.dsp.focus({ direction = "right" }))
+hl.bind("KP_Up", hl.dsp.focus({ direction = "up" }))
+hl.bind("KP_Down", hl.dsp.focus({ direction = "down" }))
+LUA
 else
     : > "$out.tmp"
 fi

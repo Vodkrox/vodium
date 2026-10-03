@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera hypr/local.conf a partir de config.json (ajustes específicos de cada máquina)."""
+"""Genera hypr/local.lua a partir de config.json (ajustes específicos de cada máquina)."""
 import glob
 import json
 import os
@@ -75,25 +75,48 @@ cfg = json.load(open(CONFIG))
 d, h = cfg.get("display", {}), cfg.get("hypr", {})
 qs = f"{os.path.expanduser(h.get('quickshell_command', 'qs'))} -p {os.path.join(ROOT, 'quickshell', 'osd')}"
 
+def lua_str(value):
+    return json.dumps(value, ensure_ascii=False)
+
+
 lines = [
-    "# Generado por scripts/generate-conf.py desde config.json. No editar.",
-    f"$qs = {qs}",
-    f"$terminal = {h.get('terminal', 'alacritty')}",
-    f"$lock = {h.get('lock_command', 'swaylock')}",
-    f"$calculator = {h.get('calculator', 'kcalc')}",
-    f"$autoOutput = {os.path.join(HERE, 'auto-output.py')}",
+    "-- Generado por scripts/generate-conf.py desde config.json. No editar.",
+    f"local qs = {lua_str(qs)}",
+    f"local terminal = {lua_str(h.get('terminal', 'alacritty'))}",
+    f"local lock = {lua_str(h.get('lock_command', 'swaylock'))}",
+    f"local calculator = {lua_str(h.get('calculator', 'kcalc'))}",
+    f"local autoOutput = {lua_str(os.path.join(HERE, 'auto-output.py'))}",
     "",
-    "input {",
-    f"    kb_layout = {h.get('kb_layout', 'us')}",
-    "}",
+    "hl.config({",
+    "    input = {",
+    f"        kb_layout = {lua_str(h.get('kb_layout', 'us'))},",
+    "    },",
+    "})",
 ]
 if d.get("drm_devices"):
-    lines.append(f"env = AQ_DRM_DEVICES,{d['drm_devices']}")
+    lines.append(f"hl.env('AQ_DRM_DEVICES', {lua_str(d['drm_devices'])})")
 if d.get("internal_monitor"):
-    lines.append(f"monitor = {d['internal_monitor']}, preferred, auto, {d.get('internal_scale', 1)}")
+    lines += [
+        "hl.monitor({",
+        f"    output = {lua_str(d['internal_monitor'])},",
+        "    mode = 'preferred',",
+        "    position = 'auto',",
+        f"    scale = {d.get('internal_scale', 1)},",
+        "})",
+    ]
+lines += [
+    "",
+    "return {",
+    "    qs = qs,",
+    "    terminal = terminal,",
+    "    lock = lock,",
+    "    calculator = calculator,",
+    "    autoOutput = autoOutput,",
+    "}",
+]
 
-with open(os.path.join(HYPR, "local.conf"), "w") as f:
+with open(os.path.join(HYPR, "local.lua"), "w") as f:
     f.write("\n".join(lines) + "\n")
-numpad = os.path.join(HYPR, "numpad-binds.conf")
+numpad = os.path.join(HYPR, "numpad-binds.lua")
 if not os.path.exists(numpad):
     open(numpad, "w").close()

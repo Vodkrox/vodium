@@ -1,7 +1,10 @@
 # Configuración específica de cada máquina (se genera con hypr/scripts/generate-conf.py)
 config.json
-hypr/local.conf
-hypr/numpad-binds.conf
+hypr/local.lua
+hypr/numpad-binds.lua
+
+# Stub de compatibilidad que Hyprland regenera solo al usar hyprland.lua
+hypr/hyprland.conf
 
 # Estado local de Claude Code
 .claude/
