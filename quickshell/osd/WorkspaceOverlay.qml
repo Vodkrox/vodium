@@ -76,7 +76,7 @@ Item {
     PanelWindow {
         visible: root.windowVisible
         anchors.top: true
-        margins.top: 0
+        margins.top: 5
         implicitWidth: Math.max(1, root.occupied.length) * root.slot + 24 + 40
         implicitHeight: 84
         color: "transparent"

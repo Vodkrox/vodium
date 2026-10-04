@@ -8,10 +8,14 @@ Item {
     property bool active: false
 
     readonly property var adapter: Bluetooth.defaultAdapter
+    property var pendingDevice: null
     implicitHeight: col.implicitHeight
 
     onActiveChanged: {
-        if (!active && adapter) adapter.discovering = false;
+        if (!active) {
+            if (adapter) adapter.discovering = false;
+            pendingDevice = null;
+        }
     }
 
     readonly property var sortedDevices: [...Bluetooth.devices.values].filter(d => d.paired || d.connected
@@ -86,6 +90,44 @@ Item {
             font.pixelSize: 13
         }
 
+        Rectangle {
+            visible: root.pendingDevice !== null
+            width: parent.width
+            radius: 12
+            color: "#1c1c1c"
+            implicitHeight: pendingCol.implicitHeight + 16
+
+            Column {
+                id: pendingCol
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 8
+                y: 8
+                spacing: 8
+
+                Text {
+                    width: parent.width
+                    text: root.pendingDevice ? (root.pendingDevice.name || root.pendingDevice.address) : ""
+                    color: "#ffffff"
+                    font.pixelSize: 13
+                    elide: Text.ElideRight
+                }
+                Row {
+                    spacing: 8
+                    Chip {
+                        accent: root.accent
+                        text: "Emparejar"
+                        onClicked: { root.pendingDevice.pair(); root.pendingDevice = null; }
+                    }
+                    Chip {
+                        accent: root.accent
+                        text: "Conectar"
+                        onClicked: { root.pendingDevice.connect(); root.pendingDevice = null; }
+                    }
+                }
+            }
+        }
+
         ListView {
             id: list
             visible: root.adapter && root.adapter.enabled
@@ -105,7 +147,7 @@ Item {
                 onClicked: {
                     if (modelData.connected) modelData.disconnect();
                     else if (modelData.paired) modelData.connect();
-                    else modelData.pair();
+                    else root.pendingDevice = modelData;
                 }
             }
         }

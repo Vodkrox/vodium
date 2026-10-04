@@ -26,6 +26,25 @@ def internal_monitor():
     return ""
 
 
+def discrete_gpu():
+    """PCI runtime_status del controlador de vídeo que no es el de arranque (GPU dedicada)."""
+    for class_path in sorted(glob.glob("/sys/bus/pci/devices/*/class")):
+        dev = os.path.dirname(class_path)
+        try:
+            cls = open(class_path).read().strip()
+        except OSError:
+            continue
+        if not cls.startswith("0x03"):
+            continue
+        boot_vga = os.path.join(dev, "boot_vga")
+        if os.path.exists(boot_vga) and open(boot_vga).read().strip() == "1":
+            continue
+        status = os.path.join(dev, "power", "runtime_status")
+        if os.path.exists(status):
+            return status
+    return ""
+
+
 def default_config():
     backlight = first("/sys/class/backlight/*")
     battery = first("/sys/class/power_supply/BAT*")
@@ -51,7 +70,7 @@ def default_config():
             "sysfs_ac_glob": "/sys/class/power_supply/A*/online",
         },
         "power": {"states": {"charging": "none", "battery": "none", "low": "none"}},
-        "gpu": {"pci_device": ""},
+        "gpu": {"pci_device": discrete_gpu()},
         "menus": {"tuned_adm_path": shutil.which("tuned-adm") or "tuned-adm"},
         "chains": {"hot_speed_multiplier": 10},
         "display": {"internal_monitor": internal_monitor(), "internal_scale": 1, "drm_devices": ""},
