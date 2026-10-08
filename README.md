@@ -130,6 +130,8 @@ Hyprland can't read JSON, so the `display` and `hypr` sections are only applied 
 | `SUPER + F` | Fullscreen |
 | `SUPER + V` | Toggle floating |
 | `SUPER + ←/→` | Move window |
+| `SUPER + drag (LMB)` | Move window with the mouse |
+| `SUPER + drag (RMB)` | Resize window with the mouse |
 | `SUPER + 1…9` | Switch workspace |
 | `SUPER + SHIFT + 1…7` | Move window to a workspace |
 | `SUPER + SHIFT + 8/9` | Previous / next workspace |
